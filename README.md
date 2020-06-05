@@ -13,8 +13,8 @@ at least a board with more than one Serial port.
 
 See examples.
 
-There are functions commented that are **NOT RECOMMENDED** by the datasheet. Feel free
-to uncomment but use at your own risk.
+There are functions commented that are **NOT RECOMMENDED** by the datasheet. 
+Feel free to uncomment but use at your own risk.
 
 ## Notes
 

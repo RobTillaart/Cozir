@@ -1,13 +1,14 @@
 //
 //    FILE: Cozir.cpp
 //  AUTHOR: DirtGambit & Rob Tillaart
-// VERSION: 0.2.0
+// VERSION: 0.2.1
 // PURPOSE: library for COZIR range of sensors for Arduino
 //          Polling Mode
 //     URL: https://github.com/RobTillaart/Cozir
 //			http://forum.arduino.cc/index.php?topic=91467.0
 //
 // HISTORY:
+// 0.2.1    2020-06-05 fix library.json
 // 0.2.0    2020-03-30 some refactor and own repo 
 // 0.1.06   added support for HardwareSerial for MEGA (Rob T)
 //          removed support for NewSoftSerial ==> stop pre 1.0 support)
