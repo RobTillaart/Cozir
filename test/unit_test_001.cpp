@@ -46,8 +46,6 @@ unittest_teardown()
 
 unittest(test_constructor)
 {
-  
-  
   COZIR co(&Serial);
   co.init();
   
