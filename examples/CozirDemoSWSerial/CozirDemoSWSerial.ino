@@ -7,7 +7,7 @@
 //     URL: http://forum.arduino.cc/index.php?topic=91467.0
 //
 
-#include <cozir.h>
+#include "cozir.h"
 
 SoftwareSerial sws(3, 2);
 
