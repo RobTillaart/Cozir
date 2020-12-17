@@ -31,7 +31,7 @@
 #include "Arduino.h"
 #include "cozir.h"
 
-
+#include "SoftwareSerial.h"
 
 unittest_setup()
 {
