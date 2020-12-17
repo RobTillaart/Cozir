@@ -62,7 +62,7 @@ unittest(test_constructor)
   co.init();
   assertEqual(-1, Serial.peek());
   assertEqual("", state->serialPort[0].dataIn);
-  assertEqual("K 2", state->serialPort[0].dataOut);
+  assertEqual("K 2\r\n", state->serialPort[0].dataOut);
   
   fprintf(stderr, "COZIR.GetVersionSerial()\n");
   co.GetVersionSerial();
