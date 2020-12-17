@@ -44,6 +44,9 @@
 #define CZR_STREAMING       0x01
 #define CZR_POLLING         0x02
 
+// EEPROM ADRESSES
+// #define TODO  P 11-12 manual
+// Maybe some need 
 
 class COZIR
 {
