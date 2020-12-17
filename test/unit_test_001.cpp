@@ -219,7 +219,7 @@ unittest(test_eeprom)
   assertEqual("P 100 42", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.GetEEPROM(100)\n");
-  uint8t val = co.GetEEPROM(100);
+  uint8_t val = co.GetEEPROM(100);
   assertEqual("p 100", state->serialPort[0].dataOut);
 }
 
