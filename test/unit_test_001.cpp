@@ -37,6 +37,7 @@
 
 unittest_setup()
 {
+  fprintf(stderr, "\n");
 }
 
 unittest_teardown()
@@ -50,27 +51,28 @@ unittest(test_constructor)
   state->serialPort[0].dataIn = "";             // the queue of data waiting to be read
   state->serialPort[0].dataOut = "";            // the history of data written
 
-  fprintf(stderr, "\ndefault there is no data on the Serial bus\n");
+  fprintf(stderr, "default there is no data on the Serial bus\n");
   assertEqual(-1, Serial.peek());
   assertEqual("", state->serialPort[0].dataIn);
   assertEqual("", state->serialPort[0].dataOut);
 
   COZIR co(&Serial);
 
-  fprintf(stderr, "\nCalling COZIR.init()\n");
+  fprintf(stderr, "COZIR.init()\n");
   co.init();
   assertEqual(-1, Serial.peek());
   assertEqual("", state->serialPort[0].dataIn);
   assertEqual("K 2", state->serialPort[0].dataOut);
   
-  fprintf(stderr, "\nGetVersionSerial\n");
+  fprintf(stderr, "COZIR.GetVersionSerial()\n");
   co.GetVersionSerial();
   assertEqual("Y", state->serialPort[0].dataOut);
   
-  fprintf(stderr, "\nGetConfiguration\n");
+  fprintf(stderr, "COZIR.GetConfiguration()\n");
   co.GetConfiguration();
   assertEqual("*", state->serialPort[0].dataOut);
 }
+
 
 unittest(test_setOperatingMode)
 {
@@ -80,22 +82,23 @@ unittest(test_setOperatingMode)
 
   COZIR co(&Serial);
 
-  fprintf(stderr, "\nCalling COZIR.init()\n");
+  fprintf(stderr, "COZIR.init()\n");
   co.init();
   assertEqual("K 2", state->serialPort[0].dataOut);
   
-  fprintf(stderr, "\nSetOperatingMode(CZR_COMMAND)\n");
+  fprintf(stderr, "COZIR.SetOperatingMode(CZR_COMMAND)\n");
   co.SetOperatingMode(CZR_COMMAND);
   assertEqual("K 0", state->serialPort[0].dataOut);
   
-  fprintf(stderr, "\nSetOperatingMode(CZR_STREAMING)\n");
+  fprintf(stderr, "COZIR.SetOperatingMode(CZR_STREAMING)\n");
   co.SetOperatingMode(CZR_STREAMING);
   assertEqual("K 1", state->serialPort[0].dataOut);
   
-  fprintf(stderr, "\nSetOperatingMode(CZR_POLLING)\n");
+  fprintf(stderr, "COZIR.SetOperatingMode(CZR_POLLING)\n");
   co.SetOperatingMode(CZR_POLLING);
   assertEqual("K 2", state->serialPort[0].dataOut);
 }
+
 
 unittest(test_read_sensor)
 {
@@ -105,25 +108,29 @@ unittest(test_read_sensor)
 
   COZIR co(&Serial);
 
-  fprintf(stderr, "\nCalling COZIR.init()\n");
+  fprintf(stderr, "COZIR.init()\n");
   co.init();
   assertEqual("K 2", state->serialPort[0].dataOut);
   
+  fprintf(stderr, "COZIR.Celsius()\n");
   float Celsius = co.Celsius();
   assertEqual("K 0", state->serialPort[0].dataOut);
   
+  fprintf(stderr, "COZIR.Humidity()\n");
   float Humidity = co.Humidity();
   assertEqual("K 0", state->serialPort[0].dataOut);
 
+  fprintf(stderr, "COZIR.Light()\n");
   float Light = co.Light();
   assertEqual("K 0", state->serialPort[0].dataOut);
 
+  fprintf(stderr, "COZIR.CO2()\n");
   float CO2 = co.CO2();
   assertEqual("K 0", state->serialPort[0].dataOut);
 }
 
 
-unittest(test_read_sensor)
+unittest(test_calibrate)
 {
   GodmodeState* state = GODMODE();
   state->serialPort[0].dataIn = "";             // the queue of data waiting to be read
@@ -131,19 +138,23 @@ unittest(test_read_sensor)
 
   COZIR co(&Serial);
 
-  fprintf(stderr, "\nCalling COZIR.init()\n");
+  fprintf(stderr, "COZIR.init()\n");
   co.init();
   assertEqual("K 2", state->serialPort[0].dataOut);
   
+  fprintf(stderr, "COZIR.FineTuneZeroPoint(100, 50)\n");
   uint16_t FineTuneZeroPoint = co.FineTuneZeroPoint(100, 50);
   assertEqual("F 100 50", state->serialPort[0].dataOut);
   
+  fprintf(stderr, "COZIR.CalibrateFreshAir()\n");
   uint16_t CalibrateFreshAir = co.CalibrateFreshAir();
   assertEqual("G", state->serialPort[0].dataOut);
 
+  fprintf(stderr, "COZIR.CalibrateNitrogen()\n");
   uint16_t CalibrateNitrogen = co.CalibrateNitrogen();
   assertEqual("U", state->serialPort[0].dataOut);
 
+  fprintf(stderr, "COZIR.CalibrateKnownGas(100)\n");
   uint16_t CalibrateKnownGas = co.CalibrateKnownGas(100);
   assertEqual("X 100", state->serialPort[0].dataOut);
 }
@@ -152,18 +163,20 @@ unittest(test_read_sensor)
 unittest(test_digi_filter)
 {
   GodmodeState* state = GODMODE();
-  state->serialPort[0].dataIn = "";             // the queue of data waiting to be read
-  state->serialPort[0].dataOut = "";            // the history of data written
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
 
   COZIR co(&Serial);
 
-  fprintf(stderr, "\nCalling COZIR.init()\n");
+  fprintf(stderr, "COZIR.init()\n");
   co.init();
   assertEqual("K 2", state->serialPort[0].dataOut);
   
+  fprintf(stderr, "COZIR.SetDigiFilter(42)\n");
   co.SetDigiFilter(42);
   assertEqual("A 42", state->serialPort[0].dataOut);
   
+  fprintf(stderr, "COZIR.GetDigiFilter()\n");
   uint8_t digifilter = co.GetDigiFilter();
   assertEqual("a", state->serialPort[0].dataOut);
 }
@@ -172,23 +185,25 @@ unittest(test_digi_filter)
 unittest(test_streaming_mode)
 {
   GodmodeState* state = GODMODE();
-  state->serialPort[0].dataIn = "";             // the queue of data waiting to be read
-  state->serialPort[0].dataOut = "";            // the history of data written
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
 
   COZIR co(&Serial);
-
-  fprintf(stderr, "\nCalling COZIR.init()\n");
   co.init();
-  fprintf(stderr, "\nSetOperatingMode(CZR_STREAMING)\n");
+
+  fprintf(stderr, "COZIR.SetOperatingMode(CZR_STREAMING)\n");
   co.SetOperatingMode(CZR_STREAMING);
   assertEqual("K 1", state->serialPort[0].dataOut);
-  
+
+  fprintf(stderr, "COZIR.SetOutputFields(CZR_HUMIDITY | CZR_RAWTEMP | CZR_RAWCO2)\n");
   co.SetOutputFields(CZR_HUMIDITY | CZR_RAWTEMP | CZR_RAWCO2);
   assertEqual("M 4226", state->serialPort[0].dataOut);
-  
+
+  fprintf(stderr, "COZIR.GetRecentFields()\n");
   co.GetRecentFields();
   assertEqual("Q", state->serialPort[0].dataOut);
 }
+
 
 unittest(test_eeprom)
 {
@@ -197,18 +212,16 @@ unittest(test_eeprom)
   state->serialPort[0].dataOut = "";            // the history of data written
 
   COZIR co(&Serial);
-
-  fprintf(stderr, "\nCalling COZIR.init()\n");
   co.init();
-  
+
+  fprintf(stderr, "COZIR.SetEEPROM(100, 42)\n");
   co.SetEEPROM(100, 42);
   assertEqual("P 100 42", state->serialPort[0].dataOut);
-  
+
+  fprintf(stderr, "COZIR.GetEEPROM(100)\n");
   uint8t val = co.GetEEPROM(100);
   assertEqual("p 100", state->serialPort[0].dataOut);
 }
-
-
 
 
 
