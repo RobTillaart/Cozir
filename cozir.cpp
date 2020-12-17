@@ -70,7 +70,7 @@ void COZIR::SetOperatingMode(uint8_t mode)
 float COZIR::Celsius()
 {
     uint16_t rv = Request("T");
-    return 0.1 * (rv - 1000.0);        // TODO verify negative values
+    return 0.1 * (rv - 1000.0);     // P17 negative values
 }
 
 
@@ -92,6 +92,11 @@ uint32_t COZIR::CO2()
     return Request("Z");
 }
 
+uint16_t COZIR::getPPMFactor()
+{
+  _ppmFactor = Request(".");
+  return _ppmFactor;
+}
 
 // CALLIBRATION - USE THESE WITH CARE
 // use these only in pollingmode (on the Arduino)
@@ -177,9 +182,10 @@ void COZIR::SetOutputFields(uint16_t fields)
 }
 
 
-// For Arduino you must read the serial yourself as
-// the internal buffer of this Class cannot handle
-// large output - can be > 100 bytes!!
+// WARNING:
+// After a call to GetRecentFields() you must read the serial port yourself as
+// the internal buffer of this Class cannot handle the possible large output.
+// It can be over 100 bytes long lines!
 void COZIR::GetRecentFields()
 {
     Command("Q");
@@ -191,12 +197,9 @@ void COZIR::GetRecentFields()
 //
 // SEE DATASHEET 7.2 EEPROM FOR DETAILS
 //
-// TODO
-// - defines for addresses
-// - do HILO values in one call
-//
 void COZIR::SetEEPROM(uint8_t address, uint8_t value)
 {
+    if (address > BCLO) return;
     sprintf(buffer, "P %u %u", address, value);
     Command(buffer);
 }
@@ -212,7 +215,12 @@ uint8_t COZIR::GetEEPROM(uint8_t address)
 //
 // COMMAND MODE
 //
-// read serial yourself
+// read serial yourself -
+//
+// TODO Page 5:  Mode 0 Command Mode
+// This is primarily intended for use when extracting larger chunks 
+// of information from the sensor (for example using the Y and * commands).
+// In this mode, the sensor is stopped waiting for commands.
 //
 void COZIR::GetVersionSerial()
 {
@@ -243,6 +251,9 @@ uint32_t COZIR::Request(const char* str)
 
     // read answer; there may be a 100ms delay!
     // TODO: PROPER TIMEOUT CODE. - what is longest answer possible?
+    // yield()?
+    // output always stops with /r/n.
+    
     delay(200);
 
     // start with empty buffer
@@ -253,18 +264,7 @@ uint32_t COZIR::Request(const char* str)
     }
     buffer[idx] = '\0';
 
-    uint32_t rv = 0;
-    switch(buffer[0])
-    {
-    case 'T' :
-        rv = atol(&buffer[5]);
-        if (buffer[4] == 1) rv += 1000;
-        // negative values are mapped above 1000..1250 => capture this in Celsius()
-        break;
-        default :
-        rv = atol(&buffer[2]);
-        break;
-    }
+    uint32_t rv = atol(&buffer[2]);
     return rv;
 }
 

@@ -127,20 +127,20 @@ unittest(test_read_sensor)
   state->serialPort[0].dataOut = "";
   float Celsius = co.Celsius();
   assertEqual("T\r\n", state->serialPort[0].dataOut);
-  assertEqual(50.0, Celsius);
+  assertEqualFloat(50.0, Celsius, 0.0001);
   
   state->serialPort[0].dataIn = "T   1257\r\n";
   state->serialPort[0].dataOut = "";
   Celsius = co.Celsius();
   assertEqual("T\r\n", state->serialPort[0].dataOut);
-  assertEqual(-25.7, Celsius);
+  assertEqualFloat(-25.7, Celsius, 0.0001);
   
   fprintf(stderr, "COZIR.Humidity()\n");
   state->serialPort[0].dataIn = "H 627\r\n";
   state->serialPort[0].dataOut = "";
   float Humidity = co.Humidity();
   assertEqual("H\r\n", state->serialPort[0].dataOut);
-  assertEqual(62.7, Humidity);
+  assertEqualFloat(62.7, Humidity, 0.0001);
 
   fprintf(stderr, "COZIR.Light()\n");
   state->serialPort[0].dataIn = "L 189\r\n";
@@ -171,10 +171,10 @@ unittest(test_calibrate)
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
   
   fprintf(stderr, "COZIR.FineTuneZeroPoint(400, 382)\n");
-  state->serialPort[0].dataIn = "32950\r\n";
+  state->serialPort[0].dataIn = "F 32950\r\n";
   state->serialPort[0].dataOut = "";
   uint16_t FineTuneZeroPoint = co.FineTuneZeroPoint(400, 382);
-  assertEqual("F 100 50", state->serialPort[0].dataOut);
+  assertEqual("F 400 382\r\n", state->serialPort[0].dataOut);
   assertEqual(32950, FineTuneZeroPoint);
   
   
@@ -274,18 +274,18 @@ unittest(test_eeprom)
   co.init();
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
 
-  fprintf(stderr, "COZIR.SetEEPROM(100, 42)\n");
+  fprintf(stderr, "COZIR.SetEEPROM(10, 42)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
-  co.SetEEPROM(100, 42);
-  assertEqual("P 100 42\r\n", state->serialPort[0].dataOut);
+  co.SetEEPROM(10, 42);
+  assertEqual("P 10 42\r\n", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.GetEEPROM(100)\n");
-  state->serialPort[0].dataIn = "Q 4226\r\n";
+  state->serialPort[0].dataIn = "p 42\r\n";
   state->serialPort[0].dataOut = "";
   uint8_t GetEEPROM = co.GetEEPROM(100);
   assertEqual("p 100\r\n", state->serialPort[0].dataOut);
-  assertEqual(4226, GetEEPROM);
+  assertEqual(42, GetEEPROM);
 }
 
 
