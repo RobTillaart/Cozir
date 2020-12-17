@@ -48,7 +48,7 @@ unittest(test_constructor)
 {
   
   
-  COZIR co(Serial);
+  COZIR co(&Serial);
   co.init();
   
   assertEqual(1, 1);
