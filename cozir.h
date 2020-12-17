@@ -12,7 +12,6 @@
 //
 
 #include "Arduino.h"
-#include "SoftwareSerial.h"
 
 #define COZIR_LIB_VERSION "0.2.2"
 

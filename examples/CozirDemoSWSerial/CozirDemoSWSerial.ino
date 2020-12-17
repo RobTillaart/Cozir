@@ -8,6 +8,7 @@
 //
 
 #include "cozir.h"
+#include "SoftwareSerial.h"
 
 SoftwareSerial sws(3, 2);
 
