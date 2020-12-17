@@ -140,7 +140,7 @@ unittest(test_read_sensor)
   state->serialPort[0].dataOut = "";
   float Humidity = co.Humidity();
   assertEqual("H\r\n", state->serialPort[0].dataOut);
-  assertEqual(62.7, Humidity
+  assertEqual(62.7, Humidity);
 
   fprintf(stderr, "COZIR.Light()\n");
   state->serialPort[0].dataIn = "L 189\r\n";
