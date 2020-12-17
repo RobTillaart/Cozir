@@ -46,10 +46,20 @@ unittest_teardown()
 
 unittest(test_constructor)
 {
+  GodmodeState* state = GODMODE();
+  state->serialPort[0].dataIn = "";             // the queue of data waiting to be read
+  state->serialPort[0].dataOut = "";            // the history of data written
+
+  // When there is no data, nothing happens
+  assertEqual(-1, Serial.peek());
+  assertEqual("", state->serialPort[0].dataIn);
+  assertEqual("", state->serialPort[0].dataOut);
+
   COZIR co(&Serial);
   co.init();
-  
-  assertEqual(1, 1);
+  assertEqual(-1, Serial.peek());
+  assertEqual("", state->serialPort[0].dataIn);
+  assertEqual("", state->serialPort[0].dataOut);
 }
 
 unittest_main()
