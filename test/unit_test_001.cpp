@@ -225,7 +225,7 @@ unittest(test_digi_filter)
   state->serialPort[0].dataOut = "";
   uint8_t digifilter = co.GetDigiFilter();
   assertEqual("a\r\n", state->serialPort[0].dataOut);
-  assertEqual(42, a);
+  assertEqual(42, digifilter);
 }
 
 
