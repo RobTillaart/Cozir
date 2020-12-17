@@ -31,7 +31,9 @@
 #include "Arduino.h"
 #include "cozir.h"
 
-#include "SoftwareSerial.h"
+// NOTE: normally the COZIR lib is tested with software serial, at least in sketches
+// to get the unit test up and running I (tried to) use Serial here.
+
 
 unittest_setup()
 {
@@ -44,8 +46,9 @@ unittest_teardown()
 
 unittest(test_constructor)
 {
-  SoftwareSerial sws(3,4);
-  COZIR co(&sws);
+  
+  
+  COZIR co(Serial);
   co.init();
   
   assertEqual(1, 1);
