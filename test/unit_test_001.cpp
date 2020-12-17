@@ -123,17 +123,17 @@ unittest(test_read_sensor)
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
   
   fprintf(stderr, "COZIR.Celsius()\n");
-  state->serialPort[0].dataIn = "T    500\r\n";
+  state->serialPort[0].dataIn = "T    750\r\n";   // 1000 = 0°C
   state->serialPort[0].dataOut = "";
   float Celsius = co.Celsius();
   assertEqual("T\r\n", state->serialPort[0].dataOut);
-  assertEqualFloat(50.0, Celsius, 0.0001);
+  assertEqualFloat(-25.0, Celsius, 0.0001);
   
   state->serialPort[0].dataIn = "T   1257\r\n";
   state->serialPort[0].dataOut = "";
   Celsius = co.Celsius();
   assertEqual("T\r\n", state->serialPort[0].dataOut);
-  assertEqualFloat(-25.7, Celsius, 0.0001);
+  assertEqualFloat(25.7, Celsius, 0.0001);
   
   fprintf(stderr, "COZIR.Humidity()\n");
   state->serialPort[0].dataIn = "H 627\r\n";
