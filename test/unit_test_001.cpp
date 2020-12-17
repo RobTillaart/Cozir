@@ -254,11 +254,11 @@ unittest(test_streaming_mode)
   assertEqual("M 4226\r\n", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.GetRecentFields()\n");
-  state->serialPort[0].dataIn = "Q 4226\r\n";
+  state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
-  uint16_t GetRecentFields = co.GetRecentFields();
+  co.GetRecentFields();
   assertEqual("Q\r\n", state->serialPort[0].dataOut);
-  assertEqual(4226, GetRecentFields);
+  // USER MUST READ RETURNED DATA AS IT CAN BE QUITE A LOT.
 }
 
 
