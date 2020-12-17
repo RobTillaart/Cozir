@@ -101,7 +101,7 @@ public:
 
     // STREAMING MODE - needs testing...
     void     SetOutputFields(uint16_t fields);
-    void     ClrOutputFields(); { SetOutputFields(CZR_NONE); };
+    void     ClrOutputFields() { SetOutputFields(CZR_NONE); };
     // WARNING:
     // After a call to GetRecentFields() you must read the serial port yourself as
     // the internal buffer of this Class cannot handle the possible large output.
