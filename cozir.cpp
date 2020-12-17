@@ -1,15 +1,16 @@
 //
 //    FILE: Cozir.cpp
 //  AUTHOR: DirtGambit & Rob Tillaart
-// VERSION: 0.2.1
+// VERSION: 0.2.2
 // PURPOSE: library for COZIR range of sensors for Arduino
 //          Polling Mode
 //     URL: https://github.com/RobTillaart/Cozir
-//			http://forum.arduino.cc/index.php?topic=91467.0
+//          http://forum.arduino.cc/index.php?topic=91467.0
 //
 // HISTORY:
-// 0.2.1    2020-06-05 fix library.json
-// 0.2.0    2020-03-30 some refactor and own repo 
+// 0.2.2    2020-12-17  add arduino-ci + unit tests
+// 0.2.1    2020-06-05  fix library.json
+// 0.2.0    2020-03-30  some refactor and own repo 
 // 0.1.06   added support for HardwareSerial for MEGA (Rob T)
 //          removed support for NewSoftSerial ==> stop pre 1.0 support)
 // 0.1.05   fixed bug: uint16_t request() to uint32_t request() in .h file (Rob T)
@@ -21,7 +22,9 @@
 // READ DATASHEET BEFORE USE OF THIS LIB !
 //
 
+
 #include "cozir.h"
+
 
 COZIR::COZIR(Stream * str)
 {
@@ -29,14 +32,16 @@ COZIR::COZIR(Stream * str)
     buffer[0] = '\0';
 }
 
+
 void COZIR::init()
 {
     // overide default streaming (takes too much performance)
     SetOperatingMode(CZR_POLLING);
     // delay for initialization  TODO should be timestamp based
-	//                           with an isInitialized function. Non blocking.
+    //                           with an isInitialized function. Non blocking.
     delay(1200);
 }
+
 
 ////////////////////////////////////////////////////////////
 //
@@ -52,6 +57,7 @@ void COZIR::SetOperatingMode(uint8_t mode)
     Command(buffer);
 }
 
+
 ////////////////////////////////////////////////////////////
 //
 // POLLING MODE
@@ -64,13 +70,15 @@ void COZIR::SetOperatingMode(uint8_t mode)
 float COZIR::Celsius()
 {
     uint16_t rv = Request("T");
-    return 0.1 * (rv - 1000.0);		// TODO verify negative values
+    return 0.1 * (rv - 1000.0);        // TODO verify negative values
 }
+
 
 float COZIR::Humidity()
 {
     return 0.1 * Request("H");
 }
+
 
 // TODO UNITS UNKNOWN lux??
 float COZIR::Light()
@@ -78,10 +86,12 @@ float COZIR::Light()
     return 1.0 * Request("L");
 }
 
+
 uint32_t COZIR::CO2()
 {
     return Request("Z");
 }
+
 
 // CALLIBRATION - USE THESE WITH CARE
 // use these only in pollingmode (on the Arduino)
@@ -96,16 +106,19 @@ uint16_t COZIR::FineTuneZeroPoint(uint16_t v1, uint16_t v2)
     return Request(buffer);
 }
 
+
 // mostly the default calibrator
 uint16_t COZIR::CalibrateFreshAir()
 {
     return Request("G");
 }
 
+
 uint16_t COZIR::CalibrateNitrogen()
 {
     return Request("U");
 }
+
 
 uint16_t COZIR::CalibrateKnownGas(uint16_t value)
 {
@@ -138,6 +151,7 @@ void COZIR::SetDigiFilter(uint8_t value)
     Command(buffer);
 }
 
+
 uint8_t COZIR::GetDigiFilter()
 {
     return Request("a");
@@ -161,6 +175,7 @@ void COZIR::SetOutputFields(uint16_t fields)
     sprintf(buffer, "M %u", fields);
     Command(buffer);
 }
+
 
 // For Arduino you must read the serial yourself as
 // the internal buffer of this Class cannot handle
@@ -186,6 +201,7 @@ void COZIR::SetEEPROM(uint8_t address, uint8_t value)
     Command(buffer);
 }
 
+
 uint8_t COZIR::GetEEPROM(uint8_t address)
 {
     sprintf(buffer, "p %u", address);
@@ -203,6 +219,7 @@ void COZIR::GetVersionSerial()
     Command("Y");
 }
 
+
 void COZIR::GetConfiguration()
 {
     Command("*");
@@ -218,6 +235,7 @@ void COZIR::Command(const char* str)
     ser->print(str);
     ser->print("\r\n");
 }
+
 
 uint32_t COZIR::Request(const char* str)
 {
@@ -249,4 +267,6 @@ uint32_t COZIR::Request(const char* str)
     }
     return rv;
 }
+
+
 // -- END OF FILE --
