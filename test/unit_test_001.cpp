@@ -47,7 +47,7 @@ unittest_teardown()
 }
 
 
-unit_test(test_software_serial)
+unittest(test_software_serial)
 {
   SoftwareSerial sws(4,5);
   COZIR co(&sws);
