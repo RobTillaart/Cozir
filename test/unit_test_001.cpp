@@ -53,16 +53,13 @@ unittest(test_software_serial)
   COZIR co(&sws);
 
   fprintf(stderr, "COZIR.init()\n");
-  state->serialPort[0].dataIn = "";
-  state->serialPort[0].dataOut = "";
   co.init();
-  assertEqual("K 2\r\n", state->serialPort[0].dataOut);
-
 }
 
 unittest(test_constructor)
 {
   GodmodeState* state = GODMODE();
+
   state->serialPort[0].dataIn = "";             // the queue of data waiting to be read
   state->serialPort[0].dataOut = "";            // the history of data written
 
