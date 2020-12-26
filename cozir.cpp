@@ -1,13 +1,14 @@
 //
 //    FILE: Cozir.cpp
 //  AUTHOR: DirtGambit & Rob Tillaart
-// VERSION: 0.2.2
+// VERSION: 0.2.5
 // PURPOSE: library for COZIR range of sensors for Arduino
 //          Polling Mode
 //     URL: https://github.com/RobTillaart/Cozir
 //          http://forum.arduino.cc/index.php?topic=91467.0
 //
 // HISTORY:
+// 0.2.5    2020-12-26  fix software Serial + version number (oops)
 // 0.2.2    2020-12-17  add arduino-ci + unit tests
 // 0.2.1    2020-06-05  fix library.json
 // 0.2.0    2020-03-30  some refactor and own repo 
