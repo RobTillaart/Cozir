@@ -36,6 +36,8 @@
 // NOTE: normally the COZIR lib is tested with software serial, at least in sketches
 // to get the unit test up and running I (tried to) use Serial here.
 
+// aspects of software serial
+bool bigEndian = false;
 
 unittest_setup()
 {
@@ -49,11 +51,17 @@ unittest_teardown()
 
 unittest(test_software_serial)
 {
-  SoftwareSerial sws(4,5);
+  int receivePin = 4;
+  int transmitPin = 5;
+
+  GodmodeState* state = GODMODE();
+
+  SoftwareSerial sws(receivePin, transmitPin);
   COZIR co(&sws);
 
   fprintf(stderr, "COZIR.init()\n");
   co.init();
+  assertEqual("K 2\r\n", state->digitalPin[transmitPin].toAscii(1, bigEndian));
 }
 
 unittest(test_constructor)
