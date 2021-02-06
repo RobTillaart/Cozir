@@ -344,7 +344,7 @@ unittest(test_PPM)
   fprintf(stderr, "COZIR.getPPMFactor()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
-  co.SetEEPROM(10, 42);
+  co.getPPMFactor();
   assertEqual(".\r\n", state->serialPort[0].dataOut);
 }
 
