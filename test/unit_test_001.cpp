@@ -290,7 +290,7 @@ unittest(test_streaming_mode)
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.ClrOutputFields();
-  assertEqual("M 4226\r\n", state->serialPort[0].dataOut);
+  assertEqual("M 1\r\n", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.GetRecentFields()\n");
   state->serialPort[0].dataIn = "";
@@ -325,6 +325,27 @@ unittest(test_eeprom)
   uint8_t GetEEPROM = co.GetEEPROM(100);
   assertEqual("p 100\r\n", state->serialPort[0].dataOut);
   assertEqual(42, GetEEPROM);
+}
+
+
+
+unittest(test_PPM)
+{
+  GodmodeState* state = GODMODE();
+
+  COZIR co(&Serial);
+
+  fprintf(stderr, "COZIR.init()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.init();
+  assertEqual("K 2\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.getPPMFactor()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.SetEEPROM(10, 42);
+  assertEqual(".\r\n", state->serialPort[0].dataOut);
 }
 
 
