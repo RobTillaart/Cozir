@@ -372,7 +372,7 @@ uint32_t COZIR::_request(const char* str)
   uint8_t idx = 0;
   uint32_t start = millis();
   // while (millis() - start < CZR_REQUEST_TIMEOUT)
-  delay(CZR_REQUEST_TIMEOUT)'
+  delay(CZR_REQUEST_TIMEOUT);
   while (true)
   {
     // delay(1);
