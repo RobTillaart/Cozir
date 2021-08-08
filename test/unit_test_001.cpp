@@ -373,18 +373,82 @@ unittest(test_eeprom_II)
   assertEqual("p 3\r\np 4\r\n", state->serialPort[0].dataOut);
   assertEqual(298, ACP);
 
-/*
-  // TODO
+
+  fprintf(stderr, "COZIR.setAutoCalibrationInterval()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.setAutoCalibrationInterval();
+  assertEqual("P 5 0\r\nP 6 123\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.getAutoCalibrationInterval()\n");
+  state->serialPort[0].dataIn = "p 04\r\np 01\r\n";
+  state->serialPort[0].dataOut = "";
+  uint16_t interval = co.getAutoCalibrationInterval();
+  assertEqual("p 5\r\np 6\r\n", state->serialPort[0].dataOut);
+  assertEqual(1025, interval);
+
+
+  fprintf(stderr, "COZIR.setAutoCalibrationOn()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
   co.setAutoCalibrationOn();
-  co.setAutoCalibrationOff();
-  co.getAutoCalibration();
-  co.setAutoCalibrationBackgroundConcentration(uint16_t value);
-  co.getAutoCalibrationBackgroundConcentration();
-  co.setAmbientConcentration(uint16_t value);
-  co.getAmbientConcentration();
-  co.setBufferClearTime(uint16_t value);
-  co.getBufferClearTime();
-*/
+  assertEqual("P 7 1\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.setAutoCalibrationOff()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.setAutoCalibrationOn();
+  assertEqual("P 7 0\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.getAutoCalibration()\n");
+  state->serialPort[0].dataIn = "p 01\r\n";
+  state->serialPort[0].dataOut = "";
+  uint8_t AC = co.getAutoCalibration();
+  assertEqual("p 7\r\n", state->serialPort[0].dataOut);
+  assertEqual(1, AC);
+
+
+  fprintf(stderr, "COZIR.setAutoCalibrationBackgroundConcentration()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.setAutoCalibrationBackgroundConcentration(524);
+  assertEqual("P 8 2\r\nP 9 12\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.getAutoCalibrationBackgroundConcentration()\n");
+  state->serialPort[0].dataIn = "p 03\r\np 10\r\n";
+  state->serialPort[0].dataOut = "";
+  uint16_t interval = co.getAutoCalibrationBackgroundConcentration();
+  assertEqual("p 5\r\np 6\r\n", state->serialPort[0].dataOut);
+  assertEqual(736, interval);
+
+
+  fprintf(stderr, "COZIR.setAmbientConcentration()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.setAmbientConcentration(1083);
+  assertEqual("P 10 5\r\nP 11 3\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.getAmbientConcentration()\n");
+  state->serialPort[0].dataIn = "p 05\r\np 00\r\n";
+  state->serialPort[0].dataOut = "";
+  uint16_t AMC = co.getAmbientConcentration();
+  assertEqual("p 10\r\np 11\r\n", state->serialPort[0].dataOut);
+  assertEqual(1080, AMC);
+
+
+  fprintf(stderr, "COZIR.setBufferClearTime()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.setBufferClearTime(83);
+  assertEqual("P 12 0\r\nP 13 83\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.getBufferClearTime()\n");
+  state->serialPort[0].dataIn = "p 06\r\np 01\r\n";
+  state->serialPort[0].dataOut = "";
+  uint16_t BCT = co.getBufferClearTime();
+  assertEqual("p 10\r\np 11\r\n", state->serialPort[0].dataOut);
+  assertEqual(1237, BCT);
+
 }
 
 
