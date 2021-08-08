@@ -126,6 +126,8 @@ public:
   void     setBufferClearTime(uint16_t value);
   uint16_t getBufferClearTime();
 
+  // TODO test EEPROM function first.
+  // void setEEPROMFactoryReset();
 
   // META INFORMATION
   void     getVersionSerial();

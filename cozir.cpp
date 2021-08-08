@@ -9,13 +9,14 @@
 //
 // HISTORY:
 //  0.3.0   2021-08-08  Major update - breaks interface (names mainly)
-//                      add getOperatingMode(), getOutputFields()
-//                      add inOutputFields(), kelvin()
-//                      add EEPROM functions
+//                      add isInitialized(),   add getOperatingMode(), 
+//                      add getOutputFields(), add inOutputFields(), 
+//                      add kelvin(),          add EEPROM functions
 //                      class methods camelCase
+//                      extend unit tests
 //  0.2.6   2021-01-31  fix #4 use Mode0 for versions and configuration
 //  0.2.5   2020-12-26  fix software Serial + version number (oops)
-//  0.2.2   2020-12-17  add arduino-ci + unit tests
+//  0.2.2   2020-12-17  add Arduino-CI + unit tests
 //  0.2.1   2020-06-05  fix library.json
 //  0.2.0   2020-03-30  some refactor and own repo
 //  0.1.06  added support for HardwareSerial for MEGA (Rob T)
@@ -68,10 +69,10 @@ void COZIR::init()
 {
   // override default streaming (takes too much performance)
   setOperatingMode(CZR_POLLING);
+  _initTimeStamp = millis();
   // delay for initialization is kept until next major release.
   //    timestamp + isInitialized() is prepared.
-  //    users can patch.
-  _initTimeStamp = millis();
+  //    users can comment next line.
   delay(CZR_INIT_DELAY);
 }
 
@@ -120,7 +121,7 @@ float COZIR::humidity()
 }
 
 
-// TODO UNITS UNKNOWN lux??
+// UNITS UNKNOWN lux??
 float COZIR::light()
 {
   return 1.0 * _request("L");
@@ -175,19 +176,19 @@ uint16_t COZIR::calibrateKnownGas(uint16_t value)
 
 //uint16_t COZIR::calibrateManual(uint16_t value)
 //{
-    //sprintf(_buffer, "u %u", value);
-    //return _request(_buffer);
+  //sprintf(_buffer, "u %u", value);
+  //return _request(_buffer);
 //}
 
 //uint16_t COZIR::setSpanCalibrate(uint16_t value)
 //{
-    //sprintf(_buffer, "S %u", value);
-    //return _request(_buffer);
+  //sprintf(_buffer, "S %u", value);
+  //return _request(_buffer);
 //}
 
 //uint16_t COZIR::getSpanCalibrate()
 //{
-//    return _request("s");
+//  return _request("s");
 //}
 
 
@@ -265,17 +266,17 @@ uint16_t COZIR::getAutoCalibrationInterval()
 
 void COZIR::setAutoCalibrationOn()
 {
-  _setEEPROM2(CZR_ACONOFF, 1);
+  _setEEPROM(CZR_ACONOFF, 1);
 }
 
 void COZIR::setAutoCalibrationOff()
 {
-  _setEEPROM2(CZR_ACONOFF, 0);
+  _setEEPROM(CZR_ACONOFF, 0);
 }
 
 bool COZIR::getAutoCalibration()
 {
-  return _getEEPROM2(CZR_ACONOFF);
+  return _getEEPROM(CZR_ACONOFF);
 }
 
 void COZIR::setAutoCalibrationBackgroundConcentration(uint16_t value)
@@ -310,14 +311,16 @@ uint16_t COZIR::getBufferClearTime()
 
 
 /*
+// TODO first verify if single functions work.
+
 void COZIR::setEEPROMFactoryReset()
 {
-  setAutoCalibrationPreload();
-  setAutoCalibrationInterval();
+  setAutoCalibrationPreload(0x57C0);
+  setAutoCalibrationInterval(0x8E80);
   setAutoCalibrationOff();
-  setAutoCalibrationBackgroundConcentration();
-  setAmbientConcentration();
-  setBufferClearTime();
+  setAutoCalibrationBackgroundConcentration(0x01C2);
+  setAmbientConcentration(0x01C2);
+  setBufferClearTime(0x0008);
 }
 */
 
