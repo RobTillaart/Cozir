@@ -383,9 +383,9 @@ unittest(test_eeprom_II)
   fprintf(stderr, "COZIR.getAutoCalibrationInterval()\n");
   state->serialPort[0].dataIn = "p 04\r\np 01\r\n";
   state->serialPort[0].dataOut = "";
-  uint16_t interval = co.getAutoCalibrationInterval();
+  uint16_t ACI = co.getAutoCalibrationInterval();
   assertEqual("p 5\r\np 6\r\n", state->serialPort[0].dataOut);
-  assertEqual(1025, interval);
+  assertEqual(1025, ACI);
 
 
   fprintf(stderr, "COZIR.setAutoCalibrationOn()\n");
@@ -417,9 +417,9 @@ unittest(test_eeprom_II)
   fprintf(stderr, "COZIR.getAutoCalibrationBackgroundConcentration()\n");
   state->serialPort[0].dataIn = "p 03\r\np 10\r\n";
   state->serialPort[0].dataOut = "";
-  uint16_t interval = co.getAutoCalibrationBackgroundConcentration();
+  uint16_t ACBC = co.getAutoCalibrationBackgroundConcentration();
   assertEqual("p 5\r\np 6\r\n", state->serialPort[0].dataOut);
-  assertEqual(736, interval);
+  assertEqual(736, ACBC);
 
 
   fprintf(stderr, "COZIR.setAmbientConcentration()\n");
