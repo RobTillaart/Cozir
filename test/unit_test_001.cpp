@@ -117,8 +117,9 @@ unittest(test_setOperatingMode)
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.init();
+  // init() sets CZR_POLLING
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
-  assertEqual(co.getOperatingMode(), CZR_STREAMING);
+  assertEqual(co.getOperatingMode(), CZR_POLLING);
 
   fprintf(stderr, "COZIR.SetOperatingMode(CZR_COMMAND)\n");
   state->serialPort[0].dataIn = "";
@@ -364,14 +365,14 @@ unittest(test_eeprom_II)
   state->serialPort[0].dataOut = "";
   co.setAutoCalibrationPreload(123);
   fprintf(stderr, "%s\n", state->serialPort[0].dataOut);
-  assertEqual("P 10 42\r\n", state->serialPort[0].dataOut);
+  assertEqual("P 4 123\r\n", state->serialPort[0].dataOut);  // second call
 
   fprintf(stderr, "COZIR.getAutoCalibrationPreload()\n");
   state->serialPort[0].dataIn = "p 00\r\np 42\r\n";
   state->serialPort[0].dataOut = "";
   uint16_t ACP = co.getAutoCalibrationPreload();
-  assertEqual("p 100\r\n", state->serialPort[0].dataOut);
-  assertEqual(42, ACP);
+  assertEqual("p 4\r\n", state->serialPort[0].dataOut);      // second call
+  assertEqual(4, ACP);
 
 /*
   // TODO
