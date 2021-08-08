@@ -364,7 +364,6 @@ unittest(test_eeprom_II)
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setAutoCalibrationPreload(123);
-  fprintf(stderr, "%s\n", state->serialPort[0].dataOut);
   assertEqual("P 3 0\r\n", state->serialPort[0].dataOut);    // first call
   assertEqual("P 4 123\r\n", state->serialPort[0].dataOut);  // second call
 

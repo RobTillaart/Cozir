@@ -371,14 +371,17 @@ uint32_t COZIR::_request(const char* str)
   // - output always stops with /r/n.
   uint8_t idx = 0;
   uint32_t start = millis();
-  while (millis() - start < CZR_REQUEST_TIMEOUT)
+  // while (millis() - start < CZR_REQUEST_TIMEOUT)
+  delay(CZR_REQUEST_TIMEOUT)'
+  while (true)
   {
-    delay(1);
+    // delay(1);
     if (_ser->available())
     {
-      _buffer[idx++] = _ser->read();
+      char c = _ser->read();
+      _buffer[idx++] = c;
       _buffer[idx] = '\0';
-      // TEST: add break here after \n
+      if (c == '\n') break;
     }
   }
   uint32_t rv = atol(&_buffer[2]);
