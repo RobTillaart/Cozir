@@ -180,6 +180,7 @@ Also the user must reset the operating mode either to **CZR_POLLING** or **CZR_S
 - add more unit tests 
 - Cozir I2C class for newer generation ~ same interface
 - add a **setEEPROMFactoryDefault()**?
+- build a Arduino COZIR simulator for testing.
 
 
 ## Operation
