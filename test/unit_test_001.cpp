@@ -370,7 +370,7 @@ unittest(test_eeprom_II)
   state->serialPort[0].dataIn = "p 01\r\np 42\r\n";
   state->serialPort[0].dataOut = "";
   uint16_t ACP = co.getAutoCalibrationPreload();
-  assertEqual("p 3\r\np 3\r\n", state->serialPort[0].dataOut);
+  assertEqual("p 3\r\np 4\r\n", state->serialPort[0].dataOut);
   assertEqual(298, ACP);
 
 /*
@@ -388,7 +388,6 @@ unittest(test_eeprom_II)
 }
 
 
-
 unittest(test_PPM)
 {
   GodmodeState* state = GODMODE();
@@ -404,8 +403,9 @@ unittest(test_PPM)
   fprintf(stderr, "COZIR.getPPMFactor()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
-  co.getPPMFactor();
+  uint16_t ppm = co.getPPMFactor();
   assertEqual(".\r\n", state->serialPort[0].dataOut);
+  assertEqual(1, ppm);
 
   fprintf(stderr, "\n===========================================\n\n");
 }
