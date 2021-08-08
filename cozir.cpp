@@ -308,6 +308,19 @@ uint16_t COZIR::getBufferClearTime()
 }
 
 
+/*
+void COZIR::setEEPROMFactoryReset()
+{
+  setAutoCalibrationPreload();
+  setAutoCalibrationInterval();
+  setAutoCalibrationOff();
+  setAutoCalibrationBackgroundConcentration();
+  setAmbientConcentration();
+  setBufferClearTime();
+}
+*/
+
+
 
 ////////////////////////////////////////////////////////////
 //
@@ -358,7 +371,7 @@ uint32_t COZIR::_request(const char* str)
   // - output always stops with /r/n.
   uint8_t idx = 0;
   uint32_t start = millis();
-  while(millis() - start < CZR_REQUEST_TIMEOUT)
+  while (millis() - start < CZR_REQUEST_TIMEOUT)
   {
     delay(1);
     if (_ser->available())
