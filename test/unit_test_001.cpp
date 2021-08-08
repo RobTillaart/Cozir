@@ -364,15 +364,13 @@ unittest(test_eeprom_II)
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setAutoCalibrationPreload(123);
-  assertEqual("P 4 123\r\n", state->serialPort[0].dataOut);  // second call
-  assertEqual("P 3 0\r\n", state->serialPort[0].dataOut);    // first call
+  assertEqual("P 3 0\r\nP 4 123\r\n", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.getAutoCalibrationPreload()\n");
   state->serialPort[0].dataIn = "p 01\r\np 42\r\n";
   state->serialPort[0].dataOut = "";
   uint16_t ACP = co.getAutoCalibrationPreload();
-  assertEqual("p 4\r\n", state->serialPort[0].dataOut);      // second call
-  assertEqual("p 3\r\n", state->serialPort[0].dataOut);      // first call
+  assertEqual("p 3\r\np 3\r\n", state->serialPort[0].dataOut);
   assertEqual(298, ACP);
 
 /*
@@ -408,6 +406,8 @@ unittest(test_PPM)
   state->serialPort[0].dataOut = "";
   co.getPPMFactor();
   assertEqual(".\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "\n===========================================\n\n");
 }
 
 
