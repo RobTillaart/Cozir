@@ -14,13 +14,16 @@ Arduino library for COZIR range of temperature, humidity and CO2 sensors.
 The Cozir library is **experimental** as I do not have a sensor to test the library.
 The polling mode as used in the examples seems to work quite well as this is tested by DirtGambit.
 
-This library supports only the Serial interface. An I2C based library will be written when I have access to a Cozir sensor that  supports I2C. Idea is to make the interface identical if possible.
+This library supports only the Serial interface. An I2C based library will be written 
+when I have access to a Cozir sensor that supports I2C. 
+Idea is to make the interface identical if possible.
 
 
 #### Notes
 - the **CozirDemoHWSerial.ino** example needs to run on a MEGA or a Teensy, 
 at least a board with more than one Serial port. 
-- Read the datasheet before using this library. It helps to understand the working of the Cozir sensor.
+- Read the datasheet before using this library. 
+It helps to understand the working of the Cozir sensor.
 
 
 ## Interface
@@ -37,13 +40,14 @@ Read the datasheet (again).
 
 ### Operating mode
 
-- **void setOperatingMode(uint8_t mode)** set the operating mode either to **CZR_COMMAND**, **CZR_POLLING** or  **CZR_STREAMING**
-- **uint8_t getOperatingMode()** returns the mode set, **CZR_STREAMING** is the default. Please note that **init()** sets the operating mode to **CZR_POLLING**.
+- **void setOperatingMode(uint8_t mode)** set the operating mode either to **CZR_COMMAND**, **CZR_POLLING** or **CZR_STREAMING**
+- **uint8_t getOperatingMode()** returns the mode set, **CZR_STREAMING** is the default. 
+Please note that **init()** sets the operating mode to **CZR_POLLING**.
 
 
 ### Core 
 - **float celsius()** idem.
-- **float fahrenheit()** idem, 'wrapper' around **Celsius()**
+- **float fahrenheit()** idem, 'wrapper' around **celsius()**
 - **float humidity()** idem.
 - **float light()** idem.
 - **uint32_t CO2()** idem.
@@ -62,8 +66,8 @@ Read datasheet before using these functions:
 
 #### Calibration NOT Recommended 
 
-Following 3 functions are **NOT RECOMMENDED** by the datasheet. 
-Feel free to uncomment but use at your own risk. 
+Following 3 functions are **NOT RECOMMENDED** by the datasheet.
+Feel free to uncomment and use at your own risk.
 Read datasheet before using these functions:
 
 - **uint16_t calibrateManual(uint16_t value)**
@@ -73,7 +77,7 @@ Read datasheet before using these functions:
 
 ### Digifilter
 
-use with care, read datasheet before use
+use with care, read datasheet before use.
 
 | value | meaning |
 |:-----:|:--------|
@@ -94,9 +98,11 @@ Warning: Not tested ,
 - **void clearOutputFields()** clears all the fields.
 - **uint16_t getOutputFields()** returns the 16 bit mask of set output fields.
 - **bool inOutputFields(uint16_t field)** returns true if the field is set.
-- **void getRecentFields()** After a call to getRecentFields() you must read the serial stream yourself as the internal buffer of this Class cannot handle the possible large output. Lines can be over 100 bytes long!
+- **void getRecentFields()** After a call to getRecentFields() you must read the serial stream yourself.
+The internal buffer of this Class cannot handle the possible large output. Lines can be over 100 bytes long!
 
-The fields must be set as a bit mask, the order of the fields in the output is undetermined. So one need to parse the output of teh sensor carefully.
+The fields must be set as a bit mask, the order of the fields in the output is undetermined. 
+So one need to parse the output of the sensor carefully.
 
 | Field             | Value  | Notes    |
 |:------------------|:-------|:---------|
@@ -167,7 +173,7 @@ Read datasheet for the details.
 
 - **void getVersionSerial()** requests version over serial. 
 The user should read (and parse) the serial output as it can become large. 
-Also the user must  reset the operating mode either to **CZR_POLLING** or **CZR_STREAMING**
+Also the user must reset the operating mode either to **CZR_POLLING** or **CZR_STREAMING**
 - **void getConfiguration()** requests configuration over serial. 
 The user should read (and parse) the serial output as it can become large. 
 Also the user must reset the operating mode either to **CZR_POLLING** or **CZR_STREAMING**
@@ -176,11 +182,11 @@ Also the user must reset the operating mode either to **CZR_POLLING** or **CZR_S
 ## Future
 
 - test test test test and ...
-- add more examples
-- add more unit tests 
-- Cozir I2C class for newer generation ~ same interface
 - add a **setEEPROMFactoryDefault()**?
+- example two Cozir sensors
+- example Cozir with I2C display?
 - build a Arduino COZIR simulator for testing.
+- Cozir I2C class for newer generation ~ same interface
 
 
 ## Operation
