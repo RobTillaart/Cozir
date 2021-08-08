@@ -332,18 +332,18 @@ unittest(test_eeprom_I)
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
 
   // needs redo
-  fprintf(stderr, "COZIR.SetEEPROM(10, 42)\n");
+  fprintf(stderr, "COZIR._setEEPROM(10, 42)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
-  co.setEEPROM(10, 42);
+  co._setEEPROM(10, 42);
   assertEqual("P 10 42\r\n", state->serialPort[0].dataOut);
 
-  fprintf(stderr, "COZIR.GetEEPROM(100)\n");
+  fprintf(stderr, "COZIR._getEEPROM(100)\n");
   state->serialPort[0].dataIn = "p 42\r\n";
   state->serialPort[0].dataOut = "";
-  uint8_t getEEPROM = co.getEEPROM(100);
+  uint8_t getEEPROM = co._getEEPROM(100);
   assertEqual("p 100\r\n", state->serialPort[0].dataOut);
-  assertEqual(42, GetEEPROM);
+  assertEqual(42, getEEPROM);
 }
 
 
@@ -363,7 +363,7 @@ unittest(test_eeprom_II)
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setAutoCalibrationPreload(123);
-  fprintf(stderr, state->serialPort[0].dataOut);
+  fprintf(stderr, "%s\n", state->serialPort[0].dataOut);
   assertEqual("P 10 42\r\n", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.getAutoCalibrationPreload()\n");
