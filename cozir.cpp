@@ -132,6 +132,7 @@ uint32_t COZIR::CO2()
   return _request("Z");
 }
 
+
 uint16_t COZIR::getPPMFactor()
 {
   _ppmFactor = _request(".");
@@ -368,7 +369,6 @@ uint32_t COZIR::_request(const char* str)
   // TODO: PROPER TIMEOUT CODE.
   // - might be a big delay
   // - what is longest answer possible?
-  // - output always stops with /r/n.
   uint8_t idx = 0;
   uint32_t start = millis();
   // while (millis() - start < CZR_REQUEST_TIMEOUT)
@@ -385,7 +385,8 @@ uint32_t COZIR::_request(const char* str)
     }
   }
   uint32_t rv = atol(&_buffer[2]);
-  return rv;
+  if (idx > 2) return rv;
+  return 0;
 }
 
 

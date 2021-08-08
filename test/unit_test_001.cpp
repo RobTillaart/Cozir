@@ -401,7 +401,7 @@ unittest(test_PPM)
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.getPPMFactor()\n");
-  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataIn = "p 01\r\n";
   state->serialPort[0].dataOut = "";
   uint16_t ppm = co.getPPMFactor();
   assertEqual(".\r\n", state->serialPort[0].dataOut);
@@ -409,7 +409,6 @@ unittest(test_PPM)
 
   fprintf(stderr, "\n===========================================\n\n");
 }
-
 
 
 unittest_main()
