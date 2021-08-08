@@ -377,15 +377,15 @@ unittest(test_eeprom_II)
   fprintf(stderr, "COZIR.setAutoCalibrationInterval()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
-  co.setAutoCalibrationInterval();
+  co.setAutoCalibrationInterval(123);
   assertEqual("P 5 0\r\nP 6 123\r\n", state->serialPort[0].dataOut);
 
   fprintf(stderr, "COZIR.getAutoCalibrationInterval()\n");
   state->serialPort[0].dataIn = "p 04\r\np 01\r\n";
   state->serialPort[0].dataOut = "";
-  uint16_t ACI = co.getAutoCalibrationInterval();
+  uint16_t interval = co.getAutoCalibrationInterval();
   assertEqual("p 5\r\np 6\r\n", state->serialPort[0].dataOut);
-  assertEqual(1025, ACI);
+  assertEqual(1025, interval);
 
 
   fprintf(stderr, "COZIR.setAutoCalibrationOn()\n");
