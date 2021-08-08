@@ -368,12 +368,12 @@ unittest(test_eeprom_II)
   assertEqual("P 4 123\r\n", state->serialPort[0].dataOut);  // second call
 
   fprintf(stderr, "COZIR.getAutoCalibrationPreload()\n");
-  state->serialPort[0].dataIn = "p 00\r\np 42\r\n";
+  state->serialPort[0].dataIn = "p 01\r\np 42\r\n";
   state->serialPort[0].dataOut = "";
   uint16_t ACP = co.getAutoCalibrationPreload();
   assertEqual("p 3\r\n", state->serialPort[0].dataOut);      // first call
   assertEqual("p 4\r\n", state->serialPort[0].dataOut);      // second call
-  assertEqual(4, ACP);
+  assertEqual(297, ACP);
 
 /*
   // TODO
