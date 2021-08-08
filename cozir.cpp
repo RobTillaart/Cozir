@@ -69,7 +69,7 @@ void COZIR::init()
   // override default streaming (takes too much performance)
   setOperatingMode(CZR_POLLING);
   // delay for initialization is kept until next major release.
-  //    timestamp + isInitialized() is prepared. 
+  //    timestamp + isInitialized() is prepared.
   //    users can patch.
   _initTimeStamp = millis();
   delay(CZR_INIT_DELAY);

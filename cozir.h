@@ -109,20 +109,20 @@ public:
   // EEPROM
   void     setAutoCalibrationPreload(uint16_t value);
   uint16_t getAutoCalibrationPreload();
-  
+
   void     setAutoCalibrationInterval(uint16_t value);
   uint16_t getAutoCalibrationInterval();
-  
+
   void     setAutoCalibrationOn();
   void     setAutoCalibrationOff();
   bool     getAutoCalibration();
-  
+
   void     setAutoCalibrationBackgroundConcentration(uint16_t value);
   uint16_t getAutoCalibrationBackgroundConcentration();
-  
+
   void     setAmbientConcentration(uint16_t value);
   uint16_t getAmbientConcentration();
-  
+
   void     setBufferClearTime(uint16_t value);
   uint16_t getBufferClearTime();
 
@@ -132,20 +132,25 @@ public:
   void     getConfiguration();
 
 
+  ///////////////////////////////////////////////
+  //
+  // SEMI PRIVATE FOR UNIT TESTING THEM
+  //
+  void     _setEEPROM(uint8_t address, uint8_t value);
+  uint8_t  _getEEPROM(uint8_t address);
+  void     _setEEPROM2(uint8_t address, uint16_t value);
+  uint16_t _getEEPROM2(uint8_t address);
+
+
 private:
   Stream * _ser;
   char     _buffer[20];
-  
+
   uint32_t _initTimeStamp = 0;
   uint16_t _ppmFactor     = 1;
 
   uint8_t  _operatingMode = CZR_STREAMING;
   uint16_t _outputFields  = CZR_NONE;
-
-  void     _setEEPROM(uint8_t address, uint8_t value);
-  uint8_t  _getEEPROM(uint8_t address);
-  void     _setEEPROM2(uint8_t address, uint16_t value);
-  uint16_t _getEEPROM2(uint8_t address);
 
   void     _command(const char* str);
   uint32_t _request(const char* str);

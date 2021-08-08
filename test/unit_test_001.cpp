@@ -68,6 +68,8 @@ unittest(test_software_serial)
   fprintf(stderr, "COZIR.init()\n");
   co.init();
   assertEqual("K 2\r\n", state->digitalPin[transmitPin].toAscii(1, bigEndian));
+  delay(1300);
+  assertTrue(co.isInitialized());
 }
 
 
@@ -90,14 +92,14 @@ unittest(test_constructor)
   state->serialPort[0].dataOut = "";
   co.init();
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
-  
-  fprintf(stderr, "COZIR.GetVersionSerial()\n");
+
+  fprintf(stderr, "COZIR.getVersionSerial()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.getVersionSerial();
   assertEqual("K 0\r\nY\r\n", state->serialPort[0].dataOut);
-  
-  fprintf(stderr, "COZIR.GetConfiguration()\n");
+
+  fprintf(stderr, "COZIR.getConfiguration()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.getConfiguration();
@@ -116,24 +118,28 @@ unittest(test_setOperatingMode)
   state->serialPort[0].dataOut = "";
   co.init();
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
-  
+  assertEqual(co.getOperatingMode(), CZR_STREAMING);
+
   fprintf(stderr, "COZIR.SetOperatingMode(CZR_COMMAND)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setOperatingMode(CZR_COMMAND);
   assertEqual("K 0\r\n", state->serialPort[0].dataOut);
-  
+  assertEqual(co.getOperatingMode(), CZR_COMMAND);
+
   fprintf(stderr, "COZIR.SetOperatingMode(CZR_STREAMING)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setOperatingMode(CZR_STREAMING);
   assertEqual("K 1\r\n", state->serialPort[0].dataOut);
-  
+  assertEqual(co.getOperatingMode(), CZR_STREAMING);
+
   fprintf(stderr, "COZIR.SetOperatingMode(CZR_POLLING)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setOperatingMode(CZR_POLLING);
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
+  assertEqual(co.getOperatingMode(), CZR_POLLING);
 }
 
 
@@ -148,33 +154,33 @@ unittest(test_read_sensor)
   state->serialPort[0].dataOut = "";
   co.init();
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
-  
+
   fprintf(stderr, "COZIR.Celsius()\n");
   state->serialPort[0].dataIn = "T    750\r\n";   // 1000 = 0°C
   state->serialPort[0].dataOut = "";
-  float Celsius = co.celsius();
+  float celsius = co.celsius();
   assertEqual("T\r\n", state->serialPort[0].dataOut);
-  assertEqualFloat(-25.0, Celsius, 0.0001);
-  
+  assertEqualFloat(-25.0, celsius, 0.0001);
+
   state->serialPort[0].dataIn = "T   1257\r\n";
   state->serialPort[0].dataOut = "";
-  Celsius = co.celsius();
+  celsius = co.celsius();
   assertEqual("T\r\n", state->serialPort[0].dataOut);
-  assertEqualFloat(25.7, Celsius, 0.0001);
-  
-  fprintf(stderr, "COZIR.Humidity()\n");
+  assertEqualFloat(25.7, celsius, 0.0001);
+
+  fprintf(stderr, "COZIR.humidity()\n");
   state->serialPort[0].dataIn = "H 627\r\n";
   state->serialPort[0].dataOut = "";
-  float Humidity = co.humidity();
+  float humidity = co.humidity();
   assertEqual("H\r\n", state->serialPort[0].dataOut);
-  assertEqualFloat(62.7, Humidity, 0.0001);
+  assertEqualFloat(62.7, humidity, 0.0001);
 
-  fprintf(stderr, "COZIR.Light()\n");
+  fprintf(stderr, "COZIR.light()\n");
   state->serialPort[0].dataIn = "L 189\r\n";
   state->serialPort[0].dataOut = "";
-  float Light = co.light();
+  float light = co.light();
   assertEqual("L\r\n", state->serialPort[0].dataOut);
-  assertEqual(189, Light);
+  assertEqual(189, light);
 
   fprintf(stderr, "COZIR.CO2()\n");
   state->serialPort[0].dataIn = "Z 432\r\n";
@@ -196,36 +202,36 @@ unittest(test_calibrate)
   state->serialPort[0].dataOut = "";
   co.init();
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
-  
-  fprintf(stderr, "COZIR.FineTuneZeroPoint(400, 382)\n");
+
+  fprintf(stderr, "COZIR.fineTuneZeroPoint(400, 382)\n");
   state->serialPort[0].dataIn = "F 32950\r\n";
   state->serialPort[0].dataOut = "";
-  uint16_t FineTuneZeroPoint = co.fineTuneZeroPoint(400, 382);
+  uint16_t fineTuneZeroPoint = co.fineTuneZeroPoint(400, 382);
   assertEqual("F 400 382\r\n", state->serialPort[0].dataOut);
-  assertEqual(32950, FineTuneZeroPoint);
-  
-  
-  fprintf(stderr, "COZIR.CalibrateFreshAir()\n");
+  assertEqual(32950, fineTuneZeroPoint);
+
+
+  fprintf(stderr, "COZIR.calibrateFreshAir()\n");
   state->serialPort[0].dataIn = "G 32950\r\n";
   state->serialPort[0].dataOut = "";
-  uint16_t CalibrateFreshAir = co.calibrateFreshAir();
+  uint16_t calibrateFreshAir = co.calibrateFreshAir();
   assertEqual("G\r\n", state->serialPort[0].dataOut);
-  assertEqual(32950, CalibrateFreshAir);
+  assertEqual(32950, calibrateFreshAir);
 
-  fprintf(stderr, "COZIR.CalibrateNitrogen()\n");
+  fprintf(stderr, "COZIR.calibrateNitrogen()\n");
   state->serialPort[0].dataIn = "U 32590\r\n";
   state->serialPort[0].dataOut = "";
-  uint16_t CalibrateNitrogen = co.calibrateNitrogen();
+  uint16_t calibrateNitrogen = co.calibrateNitrogen();
   assertEqual("U\r\n", state->serialPort[0].dataOut);
-  assertEqual(32590, CalibrateNitrogen);
+  assertEqual(32590, calibrateNitrogen);
 
-  fprintf(stderr, "COZIR.CalibrateKnownGas(100)\n");
+  fprintf(stderr, "COZIR.calibrateKnownGas(100)\n");
   state->serialPort[0].dataIn = "X 33012\r\n";
   state->serialPort[0].dataOut = "";
-  uint16_t CalibrateKnownGas = co.calibrateKnownGas(100);
+  uint16_t calibrateKnownGas = co.calibrateKnownGas(100);
   assertEqual("X 100\r\n", state->serialPort[0].dataOut);
-  assertEqual(33012, CalibrateKnownGas);
-  
+  assertEqual(33012, calibrateKnownGas);
+
 }
 
 
@@ -240,14 +246,14 @@ unittest(test_digi_filter)
   state->serialPort[0].dataOut = "";
   co.init();
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
-  
-  fprintf(stderr, "COZIR.SetDigiFilter(42)\n");
+
+  fprintf(stderr, "COZIR.setDigiFilter(42)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setDigiFilter(42);
   assertEqual("A 42\r\n", state->serialPort[0].dataOut);
-  
-  fprintf(stderr, "COZIR.GetDigiFilter()\n");
+
+  fprintf(stderr, "COZIR.getDigiFilter()\n");
   state->serialPort[0].dataIn = "a 42\r\n";
   state->serialPort[0].dataOut = "";
   uint8_t digifilter = co.getDigiFilter();
@@ -267,32 +273,44 @@ unittest(test_streaming_mode)
   state->serialPort[0].dataOut = "";
   co.init();
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
+  assertEqual(co.getOutputFields(), CZR_NONE);
 
-  fprintf(stderr, "COZIR.SetOperatingMode(CZR_STREAMING)\n");
+  fprintf(stderr, "COZIR.setOperatingMode(CZR_STREAMING)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setOperatingMode(CZR_STREAMING);
   assertEqual("K 1\r\n", state->serialPort[0].dataOut);
 
-  fprintf(stderr, "COZIR.SetOutputFields(CZR_HUMIDITY | CZR_RAWTEMP | CZR_RAWCO2)\n");
+  fprintf(stderr, "COZIR.setOutputFields(CZR_HUMIDITY | CZR_RAWTEMP | CZR_RAWCO2)\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.setOutputFields(CZR_HUMIDITY | CZR_RAWTEMP | CZR_RAWCO2);
   assertEqual("M 4226\r\n", state->serialPort[0].dataOut);
+  assertEqual(co.getOutputFields(), CZR_HTC);
 
-  fprintf(stderr, "COZIR.GetRecentFields()\n");
+  fprintf(stderr, "COZIR.inOutputFields()\n");
+  assertTrue(co.inOutputFields(CZR_HUMIDITY));
+  assertTrue(co.inOutputFields(CZR_RAWTEMP));
+  assertTrue(co.inOutputFields(CZR_RAWCO2));
+  assertFalse(co.inOutputFields(CZR_LIGHT));
+  assertFalse(co.inOutputFields(~CZR_HTC));
+
+  fprintf(stderr, "COZIR.getRecentFields()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.getRecentFields();
   assertEqual("Q\r\n", state->serialPort[0].dataOut);
-  
-  fprintf(stderr, "COZIR.ClrOutputFields()\n");
+
+  fprintf(stderr, "COZIR.clearOutputFields()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.clearOutputFields();
   assertEqual("M 1\r\n", state->serialPort[0].dataOut);
+  fprintf(stderr, "COZIR.inOutputFields()\n");
+  assertTrue(co.inOutputFields(CZR_NONE));
+  assertFalse(co.inOutputFields(~CZR_NONE));
 
-  fprintf(stderr, "COZIR.GetRecentFields()\n");
+  fprintf(stderr, "COZIR.getRecentFields()\n");
   state->serialPort[0].dataIn = "";
   state->serialPort[0].dataOut = "";
   co.getRecentFields();
@@ -301,7 +319,7 @@ unittest(test_streaming_mode)
 }
 
 
-unittest(test_eeprom)
+unittest(test_eeprom_I)
 {
   GodmodeState* state = GODMODE();
 
@@ -314,18 +332,59 @@ unittest(test_eeprom)
   assertEqual("K 2\r\n", state->serialPort[0].dataOut);
 
   // needs redo
-  // fprintf(stderr, "COZIR.SetEEPROM(10, 42)\n");
-  // state->serialPort[0].dataIn = "";
-  // state->serialPort[0].dataOut = "";
-  // co.setEEPROM(10, 42);
-  // assertEqual("P 10 42\r\n", state->serialPort[0].dataOut);
+  fprintf(stderr, "COZIR.SetEEPROM(10, 42)\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.setEEPROM(10, 42);
+  assertEqual("P 10 42\r\n", state->serialPort[0].dataOut);
 
-  // fprintf(stderr, "COZIR.GetEEPROM(100)\n");
-  // state->serialPort[0].dataIn = "p 42\r\n";
-  // state->serialPort[0].dataOut = "";
-  // uint8_t getEEPROM = co.getEEPROM(100);
-  // assertEqual("p 100\r\n", state->serialPort[0].dataOut);
-  // assertEqual(42, GetEEPROM);
+  fprintf(stderr, "COZIR.GetEEPROM(100)\n");
+  state->serialPort[0].dataIn = "p 42\r\n";
+  state->serialPort[0].dataOut = "";
+  uint8_t getEEPROM = co.getEEPROM(100);
+  assertEqual("p 100\r\n", state->serialPort[0].dataOut);
+  assertEqual(42, GetEEPROM);
+}
+
+
+unittest(test_eeprom_II)
+{
+  GodmodeState* state = GODMODE();
+
+  COZIR co(&Serial);
+
+  fprintf(stderr, "COZIR.init()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.init();
+  assertEqual("K 2\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.setAutoCalibrationPreload()\n");
+  state->serialPort[0].dataIn = "";
+  state->serialPort[0].dataOut = "";
+  co.setAutoCalibrationPreload(123);
+  fprintf(stderr, state->serialPort[0].dataOut);
+  assertEqual("P 10 42\r\n", state->serialPort[0].dataOut);
+
+  fprintf(stderr, "COZIR.getAutoCalibrationPreload()\n");
+  state->serialPort[0].dataIn = "p 00\r\np 42\r\n";
+  state->serialPort[0].dataOut = "";
+  uint16_t ACP = co.getAutoCalibrationPreload();
+  assertEqual("p 100\r\n", state->serialPort[0].dataOut);
+  assertEqual(42, ACP);
+
+/*
+  // TODO
+  co.setAutoCalibrationOn();
+  co.setAutoCalibrationOff();
+  co.getAutoCalibration();
+  co.setAutoCalibrationBackgroundConcentration(uint16_t value);
+  co.getAutoCalibrationBackgroundConcentration();
+  co.setAmbientConcentration(uint16_t value);
+  co.getAmbientConcentration();
+  co.setBufferClearTime(uint16_t value);
+  co.getBufferClearTime();
+*/
 }
 
 
