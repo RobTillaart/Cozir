@@ -81,9 +81,9 @@ unittest(test_constants)
   assertEqual(0x3FFE, CZR_ALL          );
 
   fprintf(stderr, "\nmodi operandi\n");
-  assertEqual(0x0004, CZR_COMMAND);
-  assertEqual(0x0002, CZR_STREAMING);
-  assertEqual(0x0001, CZR_POLLING);
+  assertEqual(0x00, CZR_COMMAND);
+  assertEqual(0x01, CZR_STREAMING);
+  assertEqual(0x02, CZR_POLLING);
 }
 
 
