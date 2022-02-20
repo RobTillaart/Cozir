@@ -2,7 +2,7 @@
 //
 //    FILE: Cozir.h
 //  AUTHOR: DirtGambit & Rob Tillaart
-// VERSION: 0.3.2
+// VERSION: 0.3.3
 // PURPOSE: library for COZIR range of sensors for Arduino
 //          Polling Mode
 //     URL: https://github.com/RobTillaart/Cozir
@@ -15,7 +15,7 @@
 #include "Arduino.h"
 
 
-#define COZIR_LIB_VERSION           (F("0.3.2"))
+#define COZIR_LIB_VERSION           (F("0.3.3"))
 
 
 // OUTPUTFIELDS
@@ -38,6 +38,8 @@
 #define CZR_NONE                    0x0001
 
 
+// factory default 
+#define CZR_DEFAULT                 (CZR_FILTCO2 | CZR_RAWCO2)
 // easy default setting for streaming
 #define CZR_HTC                     (CZR_HUMIDITY | CZR_RAWTEMP | CZR_RAWCO2)
 // not in datasheet for debug only

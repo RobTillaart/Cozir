@@ -1,13 +1,15 @@
 //
 //    FILE: Cozir.cpp
 //  AUTHOR: DirtGambit & Rob Tillaart
-// VERSION: 0.3.2
+// VERSION: 0.3.3
 // PURPOSE: library for COZIR range of sensors for Arduino
 //          Polling Mode
 //     URL: https://github.com/RobTillaart/Cozir
 //          http://forum.arduino.cc/index.php?topic=91467.0
 //
 // HISTORY:
+//  0.3.3   2022-02-21  update readme, update examples
+//                      tested with GC0034
 //  0.3.2   2021-12-14  update library.json, license, minor edits
 //  0.3.1   2021-10-20  update Arduino-CI, badges in readme.md
 //  0.3.0   2021-08-08  Major update - breaks interface (names mainly)
@@ -41,7 +43,8 @@
 
 
 // EEPROM ADRESSES
-// P 11-12 manual
+// P 11-12 manual     WHICH
+//
 //      Name          Address         Default value/ notes
 #define CZR_AHHI        0x00            // reserved
 #define CZR_ANLO        0x01            // reserved
@@ -373,14 +376,11 @@ uint32_t COZIR::_request(const char* str)
   // read the answer from serial.
   // TODO: PROPER TIMEOUT CODE.
   // - might be a big delay
-  // - what is longest answer possible?
+  // - what is longest answer possible? CZR_REQUEST_TIMEOUT?
   uint8_t idx = 0;
   uint32_t start = millis();
-  // while (millis() - start < CZR_REQUEST_TIMEOUT)
-  delay(CZR_REQUEST_TIMEOUT);
-  while (true)
+  while (millis() - start < CZR_REQUEST_TIMEOUT)
   {
-    // delay(1);
     if (_ser->available())
     {
       char c = _ser->read();
@@ -389,6 +389,8 @@ uint32_t COZIR::_request(const char* str)
       if (c == '\n') break;
     }
   }
+  // Serial.print("buffer: ");
+  // Serial.println(_buffer);
   uint32_t rv = atol(&_buffer[2]);
   if (idx > 2) return rv;
   return 0;
