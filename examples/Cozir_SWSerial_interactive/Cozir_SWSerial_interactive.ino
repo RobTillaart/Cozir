@@ -43,7 +43,7 @@ void loop()
     switch (toupper(c))
     {
       case '1':
-        czr.setOperatingMode(CZR_STREAMING);Z
+        czr.setOperatingMode(CZR_STREAMING);
         break;
       case '2':
         czr.setOperatingMode(CZR_POLLING);
