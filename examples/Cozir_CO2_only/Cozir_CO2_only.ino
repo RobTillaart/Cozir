@@ -34,6 +34,7 @@ void setup()
 void loop()
 {
   uint32_t c = czr.CO2();
+  c *= czr.getPPMFactor();  // most of time PPM = one.
   Serial.print("CO2 =\t");
   Serial.println(c);
   delay(1000);
