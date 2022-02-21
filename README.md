@@ -15,23 +15,24 @@ Arduino library for COZIR range CO2 sensors.
 
 The Cozir library is **experimental** as not all functionality is tested.
 The polling mode as used in the examples is tested in the past by DirtGambit.
-**CO2meter.com** sponsored a **COZIR GC0034** to start testing (2022-02).
+**CO2meter.com** sponsored a **COZIR GC0034** to start hands on testing (2022-02).
 This sensor does not support all commands, but as the pattern of the commands 
-is similar The non tested are expected to work as well.
+is similar the non-tested are expected to work as well.
 
 This version of the library supports only the **Serial** interface. 
 Preferred is a hardware Serial port to connect the sensor but software Serial 
-does work too (on UNO, but not on MEGA.
-
+does work too. 
 
 #### Notes
 
-- the hardware serial based examples like **CozirDemoHWSerial.ino** 
-needs to be run on a MEGA or a Teensy, at least a board with more than one Serial port. 
 - Read the datasheet before using this library. 
 It helps to understand the working of the COZIR sensor.
+- Be aware that not all microprocessors have a SoftwareSerial library or one 
+limited in performance. Polling at 9600 baud can be pretty blocking.
+- the hardware serial based examples needs to be run on a MEGA or a Teensy, 
+at least a board with more than one Serial port.
 - If the device is in **CZR_COMMAND** mode it does not respond too polling calls.
-It needs to be set in **CZR_POLLING**
+It needs to be set to **CZR_POLLING** mode.
 - Not all COZIR devices support all calls of this library.
 
 
@@ -214,13 +215,11 @@ See examples.
 ## Future
 
 - improve documentation
-  - separate releaseNotes.md
   - matrix functions vs sensor ?
 - test
   - test streaming mode
   - test table / matrix ?
 - add examples
-  - example two / array of COZIR sensors. MEGA with 4.
   - example COZIR with I2C display?
   - example streaming mode parsing.
 - COZIR I2C class for newer generation 
