@@ -419,15 +419,15 @@ uint16_t COZIR::_getEEPROM2(uint8_t address)
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-// COZIR_PARSE
+// C0ZIRParser
 //
-COZIR_PARSE::COZIR_PARSE()
+C0ZIRParser::C0ZIRParser()
 {
   init();
 }
 
 
-void COZIR_PARSE::init()
+void C0ZIRParser::init()
 {
   _light              = 0;
   _humidity           = 0;
@@ -449,7 +449,7 @@ void COZIR_PARSE::init()
 }
 
 
-uint8_t COZIR_PARSE::nextChar(char c)
+uint8_t C0ZIRParser::nextChar(char c)
 {
   uint8_t rv = 0;
   switch(c)
@@ -476,7 +476,7 @@ uint8_t COZIR_PARSE::nextChar(char c)
 }
 
 
-float COZIR_PARSE::celsius()
+float C0ZIRParser::celsius()
 {
   return  0.1 * (_temperature_FILT - 1000.0);
 }
@@ -486,7 +486,7 @@ float COZIR_PARSE::celsius()
 //
 //  PRIVATE
 //
-uint8_t COZIR_PARSE::store()
+uint8_t C0ZIRParser::store()
 {
   switch(_field)
   {
