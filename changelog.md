@@ -2,6 +2,11 @@
 # Cozir Changelog
 
 
+## 0.3.5 2022-02-25
+- added capturing mode 'K' field in the COZIRParser class
+-
+
+
 ## 0.3.4 2022-02-22
 - added COZIRParser class for streaming mode
 - added streaming examples

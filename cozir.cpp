@@ -1,7 +1,7 @@
 //
 //    FILE: Cozir.cpp
 //  AUTHOR: DirtGambit & Rob Tillaart
-// VERSION: 0.3.4
+// VERSION: 0.3.5
 // PURPOSE: library for COZIR range of sensors for Arduino
 //          Polling Mode
 //     URL: https://github.com/RobTillaart/Cozir
@@ -463,6 +463,7 @@ uint8_t C0ZIRParser::nextChar(char c)
     case 'H':
     case 'z':
     case 'Z':
+    case 'K':    // mode
     case 'A':
     case 'P':
       rv = store();

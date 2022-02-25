@@ -34,6 +34,7 @@ void setup()
 {
   Serial1.begin(9600);
   czr.init();
+  czrp.init();
 
   Serial.begin(115200);
   // Serial.print("COZIR_LIB_VERSION: ");
