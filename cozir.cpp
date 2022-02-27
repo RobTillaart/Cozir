@@ -3,7 +3,7 @@
 //  AUTHOR: DirtGambit & Rob Tillaart
 // VERSION: 0.3.5
 // PURPOSE: library for COZIR range of sensors for Arduino
-//          Polling Mode
+//          Polling Mode + stream parser
 //     URL: https://github.com/RobTillaart/Cozir
 //          http://forum.arduino.cc/index.php?topic=91467.0
 //
@@ -458,17 +458,36 @@ uint8_t C0ZIRParser::nextChar(char c)
       _value *= 10;
       _value += (c - '0');
       break;
+    // major responses to catch 
+    case 'z':
+    case 'Z':
     case 'L':
     case 'T':
     case 'H':
-    case 'z':
-    case 'Z':
+    // all other known responses, starting a new field
+    case 'X':
+    case '.':
+    case 'Y':
+    case 'Q':
+    case 'F':
+    case 'G':
+    case 'M':
     case 'K':    // mode
     case 'A':
+    case 'a':
     case 'P':
+    case 'p':
+    case 'S':
+    case 's':
+    case 'U':
+    case 'u':
       rv = store();
       _field = c;
       _value = 0;
+      break;
+    case ' ':    // known separators
+    case '\n':
+    case '\r':
       break;
     default:
       break;

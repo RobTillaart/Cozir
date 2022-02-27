@@ -3,7 +3,7 @@
 //    FILE: Cozir.h
 // VERSION: 0.3.5
 // PURPOSE: library for COZIR range of sensors for Arduino
-//          Polling Mode
+//          Polling Mode + stream parser
 //     URL: https://github.com/RobTillaart/Cozir
 //          http://forum.arduino.cc/index.php?topic=91467.0
 //
