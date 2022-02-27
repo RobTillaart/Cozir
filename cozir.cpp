@@ -377,6 +377,8 @@ uint32_t COZIR::_request(const char* str)
   // Serial.print("buffer: ");
   // Serial.println(_buffer);
   uint32_t rv = 0;
+  // default for PPM is different.
+  if (str[0] == '.') rv = 1;
   // do we got the requested field?
   if (strchr(_buffer, str[0]) && (idx > 2))
   {
