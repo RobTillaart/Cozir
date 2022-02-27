@@ -374,8 +374,8 @@ uint32_t COZIR::_request(const char* str)
       _buffer[idx] = '\0';
     }
   }
-  // Serial.print("buffer: ");
-  // Serial.println(_buffer);
+  Serial.print("buffer: ");
+  Serial.println(_buffer);
   uint32_t rv = 0;
   // default for PPM is different.
   if (str[0] == '.') rv = 1;
