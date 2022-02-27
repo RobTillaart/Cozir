@@ -58,6 +58,11 @@ void setup()
 
 void loop()
 {
+  // inject commands to check robustness
+  if (Serial.available())
+  {
+    Serial1.write(Serial.read());
+  }
   if (Serial1.available())
   {
     char c = Serial1.read();
