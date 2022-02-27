@@ -369,16 +369,20 @@ uint32_t COZIR::_request(const char* str)
     if (_ser->available())
     {
       char c = _ser->read();
+      if (c == '\n') break;
       _buffer[idx++] = c;
       _buffer[idx] = '\0';
-      if (c == '\n') break;
     }
   }
   // Serial.print("buffer: ");
   // Serial.println(_buffer);
-  uint32_t rv = atol(&_buffer[2]);
-  if (idx > 2) return rv;
-  return 0;
+  uint32_t rv = 0;
+  // do we got the requested field?
+  if (strchr(_buffer, str[0]) && (idx > 2))
+  {
+    rv = atol(&_buffer[2]);
+  }
+  return rv;
 }
 
 
@@ -458,7 +462,7 @@ uint8_t C0ZIRParser::nextChar(char c)
       _value *= 10;
       _value += (c - '0');
       break;
-    // major responses to catch 
+    // major responses to catch
     case 'z':
     case 'Z':
     case 'L':
