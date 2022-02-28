@@ -458,19 +458,26 @@ void C0ZIRParser::init()
 uint8_t C0ZIRParser::nextChar(char c)
 {
   uint8_t rv = 0;
+
+  //  TODO investigate
+  //  if the last char is more than 2..5 ms ago (9600 baud ~ 1 char/ms)
+  //  it probably needs to sync with the stream again.
+  //  but it depends on how calling process behaves.
+  //  - need for uint32_t _lastChar time stamp?
+
   switch(c)
   {
     case '0' ... '9':
       _value *= 10;
       _value += (c - '0');
       break;
-    // major responses to catch
+    //  major responses to catch
     case 'z':
     case 'Z':
     case 'L':
     case 'T':
     case 'H':
-    // all other known responses, starting a new field
+    //  all other known responses, starting a new field
     case 'X':
     case '.':
     case 'Y':
@@ -487,15 +494,17 @@ uint8_t C0ZIRParser::nextChar(char c)
     case 's':
     case 'U':
     case 'u':
+    //  new line triggers store() to have results available faster.
+    //  saves ~500 millis() for the last FIELD
+    case '\n':
       rv = store();
       _field = c;
       _value = 0;
       break;
-    case ' ':    // known separators
-    case '\n':
-    case '\r':
+    case ' ':    //  known separator
+    case '\r':   //  known return
       break;
-    default:
+    default:     //  catch all unknown characters, including glitches.
       break;
   }
   return rv;
