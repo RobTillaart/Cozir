@@ -66,6 +66,7 @@ void loop()
   if (Serial1.available())
   {
     char c = Serial1.read();
+    // Serial.print(c);
     field = czrp.nextChar(c);
     if (field != 0)
     {

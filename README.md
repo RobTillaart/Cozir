@@ -219,9 +219,33 @@ Also the user must reset the operating mode either to **CZR_POLLING** or **CZR_S
 See examples.
 
 
+## Future
+
+- improve documentation
+  - COZIR Parser a separate readme?
+- add examples
+  - example COZIR with I2C display?
+- COZIR I2C class for newer generation 
+  ~ same functional interface
+  - multiWire / pin a la PCF8574 lib
+
+
+#### won't for now
+
+- add a **setEEPROMFactoryDefault()**?
+  - unknown if all sensors have same values
+- build a Arduino COZIR simulator for testing.
+  - add other sensors underneath?
+
+
+
+----
+
+
 ## COZIRParser
 
 Class to parse the output of a COZIR sensor in stream mode.
+
 
 ## Description
 
@@ -237,14 +261,25 @@ The updated value can be accessed with one of the functions, see cozir.h file.
 
 An example **Cozir_stream_parse.ino** is added to show how to use this class.
 
-Note: to send commands e.g. outputField selection, to the sensor the COZIR
- class is used (which is mostly focussed on polling access).
+**NOTE:** to send commands e.g. outputField selection, to the sensor the COZIR
+ class can be used (which is mostly focussed on polling access). 
+Alternatively the user sends the low level commands just as a string over serial.
+This latter method will save memory especially in a final version of a project. 
 
+**NOTE:** The COZIRparser skips the output of the Y and \* command.
+These are configuration fields and therefore not part of the **stream mode** fields.
+Furthermore not all fields these lines produce are understood.
+So parsing these lines is left to the user for now. 
+
+**NOTE:** The COZIRparser class does not check for missing characters,
+the range of the fields recognized, or other errors. So the values
+returned should be handled with care.
 
 
 ## Interface COZIRParser
 
 Read the datasheet (again).
+
 
 ### Constructor and initialisation
 
@@ -266,21 +301,10 @@ The remainder of the interface are getters for the different fields.
 
 - improve documentation
   - COZIR Parser a separate readme?
+- support splitting output of Y and \* command.
+  - separate parser COZIRParserY()
+  - separate parser COZIRParserStar()
 - add examples
-  - example COZIR with I2C display?
-  - example with GREEN YELLOW RED LED?
   - examples for COZIRParser.
-- COZIR I2C class for newer generation 
-  ~ same functional interface
-  - multiWire / pin a la PCF8574 lib
 
 
-#### won't for now
-
-- add a **setEEPROMFactoryDefault()**?
-  - unknown if all sensors have same values
-- build a Arduino COZIR simulator for testing.
-  - add other sensors underneath?
-  
-  
-  

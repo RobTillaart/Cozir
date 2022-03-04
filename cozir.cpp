@@ -457,7 +457,14 @@ void C0ZIRParser::init()
 
 uint8_t C0ZIRParser::nextChar(char c)
 {
+  static bool skipLine = false;
   uint8_t rv = 0;
+
+  //  SKIP * and Y until next return.
+  //  as output of these two commands not handled by this parser
+  if ((c == '*') || (c == 'Y')) skipLine = true;
+  if (c == '\n') skipLine = false;
+  if (skipLine) return 0;
 
   //  TODO investigate
   //  if the last char is more than 2..5 ms ago (9600 baud ~ 1 char/ms)
@@ -480,7 +487,8 @@ uint8_t C0ZIRParser::nextChar(char c)
     //  all other known responses, starting a new field
     case 'X':
     case '.':
-    case 'Y':
+    case 'Y':     // skipped
+    case '*':     // skipped
     case 'Q':
     case 'F':
     case 'G':
@@ -501,6 +509,15 @@ uint8_t C0ZIRParser::nextChar(char c)
       _field = c;
       _value = 0;
       break;
+
+    //  drop fields of Y, and * command.
+    //  reset parsing on separators of Y and * commands
+    case ':':
+    case ',':
+      _field = 0;
+      _value = 0;
+      break;
+
     case ' ':    //  known separator
     case '\r':   //  known return
       break;
