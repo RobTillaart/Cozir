@@ -290,9 +290,9 @@ interrupted for long period, e.g. if there are missing characters.
 This should prevent the parser to overshoot a value due to concatenating the 
 value of different (interrupted) measurements or FIELDs.
 - **uint8_t nextChar(char c)** all characters coming from the sensor should 
-be send to the parser by means of **nextChar()**. Default it will return 0
-and the FIELD character is a field has been updated. 
-Read Datasheet for the chars used.
+be send to the parser by means of **nextChar()**. 
+Default it will return 0 and the FIELD character is a field has been updated. 
+Read Datasheet for the characters used.
 
 The remainder of the interface are getters for the different fields.
 
@@ -304,6 +304,7 @@ The remainder of the interface are getters for the different fields.
 - support splitting output of Y and \* command.
   - separate parser COZIRParserY()
   - separate parser COZIRParserStar()
+  - separate parser COZIRParser@()
 - add examples
   - examples for COZIRParser.
 
