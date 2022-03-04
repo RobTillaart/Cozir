@@ -462,7 +462,7 @@ uint8_t C0ZIRParser::nextChar(char c)
 
   //  SKIP * and Y until next return.
   //  as output of these two commands not handled by this parser
-  if ((c == '*') || (c == 'Y')) skipLine = true;
+  if ((c == '*') || (c == 'Y') || (c == '@')) skipLine = true;
   if (c == '\n') skipLine = false;
   if (skipLine) return 0;
 
@@ -487,6 +487,7 @@ uint8_t C0ZIRParser::nextChar(char c)
     //  all other known responses, starting a new field
     case 'X':
     case '.':
+    case '@':     // skipped
     case 'Y':     // skipped
     case '*':     // skipped
     case 'Q':

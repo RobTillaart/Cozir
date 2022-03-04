@@ -266,7 +266,7 @@ An example **Cozir_stream_parse.ino** is added to show how to use this class.
 Alternatively the user sends the low level commands just as a string over serial.
 This latter method will save memory especially in a final version of a project. 
 
-**NOTE:** The COZIRparser skips the output of the Y and \* command.
+**NOTE:** The COZIRparser skips the output of the Y, \* and @ command.
 These are configuration fields and therefore not part of the **stream mode** fields.
 Furthermore not all fields these lines produce are understood.
 So parsing these lines is left to the user for now. 
